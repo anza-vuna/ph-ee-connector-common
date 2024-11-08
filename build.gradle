@@ -10,6 +10,7 @@ plugins {
     id "com.jfrog.artifactory" version "4.24.23"
     id 'org.springframework.boot' version '2.6.2'
     id 'com.diffplug.spotless' version '6.19.0'
+    id 'maven-publish'
 }
 apply plugin: "io.spring.dependency-management"
 
@@ -178,8 +179,6 @@ sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
 
-apply plugin: 'maven-publish'
-
 publishing {
     repositories {
         maven {
@@ -192,14 +191,14 @@ publishing {
         }
     }
 
-    publications {
-        gpr(MavenPublication) {
-            from components.java
-            groupId = project.group
-            artifactId = project.name
-            version = project.version
-        }
-    }
+//    publications {
+//        gpr(MavenPublication) {
+//            from components.java
+//            groupId = project.group
+//            artifactId = project.name
+//            version = project.version
+//        }
+//    }
 }
 
 tasks.withType(JavaCompile) {
