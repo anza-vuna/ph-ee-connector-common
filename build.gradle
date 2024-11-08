@@ -178,13 +178,13 @@ sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
 
-publishing {
+publish {
     publications {
         mavenJava(MavenPublication) {
             from(components.java)
         }
     }
-    repositories {
+    repository {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/anza-vuna/ph-ee-connector-common")
