@@ -173,7 +173,7 @@ configure(this) {
 }
 
 group = 'org.mifos'
-version = '0.0.0'
+version = '1.9.1'
 sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
@@ -182,6 +182,16 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from(components.java)
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/anza-vuna/ph-ee-connector-common")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
+            }
         }
     }
 }
