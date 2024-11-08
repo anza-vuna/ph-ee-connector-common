@@ -172,11 +172,13 @@ configure(this) {
     }
 }
 
-group = 'anza-vuna'
+group = 'org.mifos'
 version = '1.9.1'
 sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
+
+apply plugin: 'maven-publish'
 
 publishing {
     publications {
