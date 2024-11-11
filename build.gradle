@@ -182,7 +182,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/anza-vuna/ph-ee-connector-common"
+            url = uri("https://maven.pkg.github.com/anza-vuna/ph-ee-connector-common")
             credentials {
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
@@ -194,7 +194,7 @@ publishing {
         mavenJava(MavenPublication) {
             from(components["java"])
             groupId = project.group
-            artifactId = project.name
+            artifactId = artifactId  // Use the explicit artifactId variable here
             version = project.version
         }
     }
@@ -206,9 +206,9 @@ tasks.withType(JavaCompile) {
 
 jar {
     enabled = true
-    archiveBaseName.set('ph-ee-connector-common')
-    archiveVersion.set(version) // This pulls the version set at the top of your script
-    archiveClassifier.set('') // Ensures there is no 'plain' or other suffix
+    archiveBaseName.set(artifactId) // Explicitly set the base name to 'ph-ee-connector-common'
+    archiveVersion.set(version)     // Use the version defined at the top
+    archiveClassifier.set('')       // Ensures there is no 'plain' or other suffix
 }
 
 //artifactory {
