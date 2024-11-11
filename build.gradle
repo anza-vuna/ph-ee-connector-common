@@ -172,7 +172,7 @@ configure(this) {
     }
 }
 
-group = 'org.mifos'
+group = 'io.vuna'
 version = '1.9.1'
 sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
@@ -190,14 +190,14 @@ publishing {
         }
     }
 
-//    publications {
-//        gpr(MavenPublication) {
-//            from components.java
-//            groupId = project.group
-//            artifactId = project.name
-//            version = project.version
-//        }
-//    }
+    publications {
+        create<MavenPublication>("default") {
+            from(components["java"])
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
