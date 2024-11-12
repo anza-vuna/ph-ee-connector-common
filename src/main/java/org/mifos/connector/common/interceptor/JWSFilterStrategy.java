@@ -18,7 +18,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Component
-@ConditionalOnExpression("${security.jws.enable} and ${security.jws.response.enable}")
+@ConditionalOnExpression("'${security.jws.enable:false}' == 'false' and '${security.jws.response.enable:false}' == 'false'")
 @Slf4j
 public class JWSFilterStrategy extends GenericFilterBean {
 
