@@ -173,7 +173,7 @@ configure(this) {
 }
 
 group = 'io.vuna'
-version = '1.9.1'
+version = '1.9.1-1'
 sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
@@ -195,7 +195,7 @@ publishing {
             from(components["java"])
             groupId = project.group
             artifactId = artifactId  // Use the explicit artifactId variable here
-            version = System.getenv("VERSION")
+            version = project.version
         }
     }
 }
@@ -207,7 +207,7 @@ tasks.withType(JavaCompile) {
 jar {
     enabled = true
     archiveBaseName.set(artifactId) // Explicitly set the base name to 'ph-ee-connector-common'
-    archiveVersion.set(System.getenv("VERSION"))     // Use the version defined at the top
+    archiveVersion.set(version)     // Use the version defined at the top
     archiveClassifier.set('')       // Ensures there is no 'plain' or other suffix
 }
 
