@@ -195,7 +195,7 @@ publishing {
             from(components["java"])
             groupId = project.group
             artifactId = artifactId  // Use the explicit artifactId variable here
-            version = project.version
+            version = System.getenv("VERSION")
         }
     }
 }
@@ -207,7 +207,7 @@ tasks.withType(JavaCompile) {
 jar {
     enabled = true
     archiveBaseName.set(artifactId) // Explicitly set the base name to 'ph-ee-connector-common'
-    archiveVersion.set(version)     // Use the version defined at the top
+    archiveVersion.set(System.getenv("VERSION"))     // Use the version defined at the top
     archiveClassifier.set('')       // Ensures there is no 'plain' or other suffix
 }
 
