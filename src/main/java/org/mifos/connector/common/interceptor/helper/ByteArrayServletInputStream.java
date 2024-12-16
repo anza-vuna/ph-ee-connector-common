@@ -1,9 +1,12 @@
 package org.mifos.connector.common.interceptor.helper;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
+//import javax.servlet.ReadListener;
+//import javax.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
 
 public class ByteArrayServletInputStream extends ServletInputStream {
 

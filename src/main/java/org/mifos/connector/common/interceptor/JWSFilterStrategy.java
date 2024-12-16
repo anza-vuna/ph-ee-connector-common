@@ -2,11 +2,16 @@ package org.mifos.connector.common.interceptor;
 
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.FilterChain;
+//import javax.servlet.ServletException;
+//import javax.servlet.ServletRequest;
+//import javax.servlet.ServletResponse;
+//import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.mifos.connector.common.interceptor.service.JsonWebSignatureService;
 import org.mifos.connector.common.util.Constant;
@@ -30,33 +35,39 @@ public class JWSFilterStrategy extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.debug("Started doFilter");
+        log.debug("Started JWSFilterStrategy.doFilter");
 
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper(httpResponse);
+
+        // Proceed with the filter chain
         chain.doFilter(request, wrappedResponse);
 
-        byte[] responseBytes = wrappedResponse.getContentAsByteArray();
-        String responseBody = new String(responseBytes, httpResponse.getCharacterEncoding());
-
-        String tenant = httpResponse.getHeader(Constant.HEADER_PLATFORM_TENANT_ID);
-        log.debug("Platform-TenantId: {}", tenant);
         try {
-            log.debug("Fetching data to be hashed from doFilter");
+            // Read response body
+            byte[] responseBytes = wrappedResponse.getContentAsByteArray();
+            String charset = httpResponse.getCharacterEncoding() != null ? httpResponse.getCharacterEncoding() : "UTF-8";
+            String responseBody = new String(responseBytes, charset);
+
+            // Fetch tenant header
+            String tenant = httpResponse.getHeader(Constant.HEADER_PLATFORM_TENANT_ID);
+            log.debug("Platform-TenantId: {}", tenant);
+
+            // Create JWS
             String dataToBeHashed = JWSUtil.getDataToBeHashed(httpResponse, responseBody, headerOrder);
             String signature = jsonWebSignatureService.signForTenant(dataToBeHashed, tenant);
 
+            // Append JWS header
             wrappedResponse.setHeader(Constant.HEADER_JWS, signature);
-            log.debug("Response str: {}", responseBody);
-            log.debug("Out data: {}", dataToBeHashed);
-            log.debug("Signature: {}", signature);
+            log.debug("JWS Signature: {}", signature);
+
         } catch (Exception e) {
-            log.debug("{}", e.getMessage());
-            log.error("Error while creating signature(SERVER TO CLIENT) stacktrace: {}", e.getMessage());
+            log.error("Error while creating JWS signature: {}", e.getMessage(), e);
         } finally {
+            // Copy response body to the actual response
             wrappedResponse.copyBodyToResponse();
         }
-        log.debug("Ended doFilter");
-    }
 
+        log.debug("Ended JWSFilterStrategy.doFilter");
+    }
 }
