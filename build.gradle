@@ -176,7 +176,7 @@ configure(this) {
 }
 
 group = 'io.vuna'
-version = '1.9.1-3'
+version = '1.9.1-4'
 sourceCompatibility = JavaVersion.VERSION_17
 def artifactId = 'ph-ee-connector-common'
 def versionNumber = version
